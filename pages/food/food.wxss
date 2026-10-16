@@ -1,0 +1,14 @@
+/* food.wxss */
+.page { padding-bottom: 40rpx; }
+.center { text-align: center; padding: 20rpx 0; }
+.note { margin-top: 20rpx; }
+
+.row3 { display: flex; padding: 16rpx 0; }
+.row3 .input { flex: 1; text-align: center; }
+.row3 .input + .input { margin-left: 16rpx; }
+
+.item { display: flex; align-items: center; padding: 16rpx 0; border-bottom: 1rpx solid #f2f3f5; }
+.item:last-child { border-bottom: none; }
+.item-body { flex: 1; min-width: 0; }
+.item-name { font-size: 28rpx; }
+.item-del { font-size: 22rpx; color: #c0c4cc; padding: 4rpx 10rpx; }

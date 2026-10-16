@@ -1,0 +1,46 @@
+<view class="page">
+  <view wx:if="{{!ready}}" class="card">
+    <view class="dim center">还没填资料，先去「今日」页把底数录了</view>
+  </view>
+
+  <block wx:else>
+    <!-- 今日账本 -->
+    <view class="card">
+      <view class="card-title">{{todayText}} · 预算 {{today.budget}} · 已吃 {{today.consumed}} · 剩余
+        <text class="{{today.remaining < 0 ? 'neg' : ''}}">{{today.remaining}}</text> kcal
+      </view>
+      <view wx:if="{{!todayItems.length}}" class="dim center">今天还没记录，去「今日」页领一个方案</view>
+      <view class="item" wx:for="{{todayItems}}" wx:key="ts">
+        <text class="item-meal">{{item.mealLabel}}</text>
+        <view class="item-body">
+          <view class="item-name">{{item.name}}</view>
+          <view class="dim">{{item.portion}} · 蛋白{{item.p}}g 碳水{{item.c}}g 脂肪{{item.f}}g</view>
+        </view>
+        <view class="item-right">
+          <view class="item-kcal">{{item.kcal}} kcal</view>
+          <view class="item-del" bindtap="removeItem" data-idx="{{item.idx}}">删</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 近 7 天 -->
+    <view class="card">
+      <view class="card-title">近 7 天账本</view>
+      <view class="day-row" wx:for="{{days}}" wx:key="date">
+        <view class="day-date {{item.isToday ? 'today' : ''}}">
+          {{item.date}}
+          <text wx:if="{{item.steps}}" class="day-steps">{{item.steps}}步</text>
+          <text wx:if="{{item.mode === 'indulge'}}" class="indulge-pill">放纵</text>
+        </view>
+        <view class="day-num {{item.over > 0 ? 'neg' : ''}}">{{item.consumed}} / {{item.budget}}</view>
+        <view class="day-status">
+          <text wx:if="{{!item.count}}" class="dim">没记录</text>
+          <text wx:elif="{{item.over > 0}}" class="neg">超 {{item.over}}</text>
+          <text wx:else class="ok">持平内</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="footer dim">超支的 1/3 会自动匀到之后 3 天；开了「只记账不惩罚」则不扣</view>
+  </block>
+</view>

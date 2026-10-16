@@ -1,0 +1,93 @@
+<view class="page">
+  <view wx:if="{{!ready}}" class="card">
+    <view class="dim center">还没填资料，先去「今日」页</view>
+  </view>
+
+  <block wx:else>
+    <view class="card">
+      <view class="card-title">身体数据</view>
+      <view class="dim">{{summary}}</view>
+      <view class="row">
+        <view class="label">性别</view>
+        <view class="seg">
+          <view class="seg-item {{form.gender==='male'?'on':''}}" bindtap="setGender" data-v="male">男</view>
+          <view class="seg-item {{form.gender==='female'?'on':''}}" bindtap="setGender" data-v="female">女</view>
+        </view>
+      </view>
+      <view class="row">
+        <view class="label">年龄 / 岁</view>
+        <input class="input" type="number" value="{{form.age}}" bindinput="onAgeInput" />
+      </view>
+      <view class="row">
+        <view class="label">身高 / cm</view>
+        <input class="input" type="number" value="{{form.height}}" bindinput="onHeightInput" />
+      </view>
+      <view class="row">
+        <view class="label">体重 / kg</view>
+        <input class="input" type="digit" value="{{form.weight}}" bindblur="saveBody" bindinput="onWeightInput" />
+      </view>
+      <view class="row">
+        <view class="label">运动量</view>
+        <picker class="picker" range="{{activityLabels}}" value="{{activityIndex}}" bindchange="onActivityChange">
+          <view class="picker-text">{{activityLabels[activityIndex]}}</view>
+        </picker>
+      </view>
+      <view class="row">
+        <view class="label">目标</view>
+        <picker class="picker" range="{{goalLabels}}" value="{{goalIndex}}" bindchange="onGoalChange">
+          <view class="picker-text">{{goalLabels[goalIndex]}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">偏好</view>
+      <view class="row">
+        <view class="label">价格带</view>
+        <picker class="picker" range="{{priceLabels}}" value="{{priceIndex}}" bindchange="onPriceChange">
+          <view class="picker-text">{{priceLabels[priceIndex]}}</view>
+        </picker>
+      </view>
+      <view class="label2">常吃类型</view>
+      <checkbox-group bindchange="onCuisineChange">
+        <label class="chk" wx:for="{{cuisineOpts}}" wx:key="key">
+          <checkbox value="{{item.key}}" checked="{{item.on}}" /><text>{{item.label}}</text>
+        </label>
+      </checkbox-group>
+      <view class="label2">口味</view>
+      <checkbox-group bindchange="onTasteChange">
+        <label class="chk" wx:for="{{tasteOpts}}" wx:key="key">
+          <checkbox value="{{item.key}}" checked="{{item.on}}" /><text>{{item.label}}</text>
+        </label>
+      </checkbox-group>
+      <view class="label2">忌口（硬排除）</view>
+      <checkbox-group bindchange="onAvoidChange">
+        <label class="chk" wx:for="{{avoidOpts}}" wx:key="key">
+          <checkbox value="{{item.key}}" checked="{{item.on}}" /><text>{{item.label}}</text>
+        </label>
+      </checkbox-group>
+      <view class="row switch-row">
+        <view class="label">超支只记账、不扣后面额度</view>
+        <switch checked="{{noPunish}}" bindchange="onNoPunishChange" color="#ff7d00" />
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">更多</view>
+      <view class="link-row" bindtap="goFood">
+        <text>自定义食物</text>
+        <text class="link-arrow">›</text>
+      </view>
+      <view class="row">
+        <view class="label">高德Key</view>
+        <input class="input" value="{{amapKey}}" bindblur="onAmapBlur" placeholder="选填，用于附近搜店" />
+      </view>
+      <view class="dim amap-note">在 lbs.amap.com 申请「Web服务」类型Key（个人免费额度够用）。Key只存在手机本地，不进代码、不上传。</view>
+    </view>
+
+    <view class="card">
+      <button class="btn-danger" bindtap="clearAll">清空全部数据</button>
+      <view class="dim center note">数据只在手机本地，不上传任何服务器</view>
+    </view>
+  </block>
+</view>

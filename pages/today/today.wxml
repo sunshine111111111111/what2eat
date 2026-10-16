@@ -1,0 +1,181 @@
+<view class="page">
+
+  <!-- ============ 首次使用：资料录入 ============ -->
+  <view wx:if="{{!profile}}" class="card">
+    <view class="h1">先把底数告诉我</view>
+    <view class="sub">数据只存在你手机本地，不上传任何服务器</view>
+
+    <view class="row">
+      <view class="label">性别</view>
+      <view class="seg">
+        <view class="seg-item {{form.gender==='male'?'on':''}}" bindtap="setGender" data-v="male">男</view>
+        <view class="seg-item {{form.gender==='female'?'on':''}}" bindtap="setGender" data-v="female">女</view>
+      </view>
+    </view>
+    <view class="row">
+      <view class="label">年龄 / 岁</view>
+      <input class="input" type="number" value="{{form.age}}" bindinput="onAgeInput" placeholder="如 24" />
+    </view>
+    <view class="row">
+      <view class="label">身高 / cm</view>
+      <input class="input" type="number" value="{{form.height}}" bindinput="onHeightInput" placeholder="如 175" />
+    </view>
+    <view class="row">
+      <view class="label">体重 / kg</view>
+      <input class="input" type="digit" value="{{form.weight}}" bindinput="onWeightInput" placeholder="如 70" />
+    </view>
+    <view class="row">
+      <view class="label">运动量</view>
+      <picker class="picker" range="{{activityLabels}}" value="{{activityIndex}}" bindchange="onActivityChange">
+        <view class="picker-text">{{activityLabels[activityIndex]}}</view>
+      </picker>
+    </view>
+    <view class="row">
+      <view class="label">目标</view>
+      <picker class="picker" range="{{goalLabels}}" value="{{goalIndex}}" bindchange="onGoalChange">
+        <view class="picker-text">{{goalLabels[goalIndex]}}</view>
+      </picker>
+    </view>
+    <view class="row">
+      <view class="label">价格带</view>
+      <picker class="picker" range="{{priceLabels}}" value="{{priceIndex}}" bindchange="onPriceChange">
+        <view class="picker-text">{{priceLabels[priceIndex]}}</view>
+      </picker>
+    </view>
+
+    <view class="label2">常吃类型（不勾 = 都行）</view>
+    <checkbox-group bindchange="onCuisineChange">
+      <label class="chk" wx:for="{{cuisineOptions}}" wx:key="key">
+        <checkbox value="{{item.key}}" /><text>{{item.label}}</text>
+      </label>
+    </checkbox-group>
+
+    <view class="label2">口味偏好（可多选）</view>
+    <checkbox-group bindchange="onTasteChange">
+      <label class="chk" wx:for="{{tasteOptions}}" wx:key="key">
+        <checkbox value="{{item.key}}" /><text>{{item.label}}</text>
+      </label>
+    </checkbox-group>
+
+    <view class="label2">忌口（推荐时直接排除）</view>
+    <checkbox-group bindchange="onAvoidChange">
+      <label class="chk" wx:for="{{avoidOptions}}" wx:key="key">
+        <checkbox value="{{item.key}}" /><text>{{item.label}}</text>
+      </label>
+    </checkbox-group>
+
+    <view class="row switch-row">
+      <view class="label">超支只记账、不扣后面额度</view>
+      <switch checked="{{noPunish}}" bindchange="onNoPunishChange" color="#ff7d00" />
+    </view>
+
+    <button class="btn-primary" bindtap="saveProfile">保存，开始用</button>
+  </view>
+
+  <!-- ============ 主界面 ============ -->
+  <block wx:else>
+
+    <!-- 预算卡 -->
+    <view class="card budget">
+      <view class="budget-top">
+        <view class="budget-left">
+          <view class="date">{{dateText}}</view>
+          <view class="kcal-line">今日预算 <text class="big">{{state.budget}}</text> kcal</view>
+          <view class="meta">已吃 {{state.consumed.kcal}} · 剩余
+            <text class="{{state.remaining < 0 ? 'neg' : ''}}">{{state.remaining}}</text>
+          </view>
+        </view>
+        <view class="indulge">
+          <switch checked="{{state.mode==='indulge'}}" bindchange="toggleIndulge" color="#ff7d00" />
+          <view class="indulge-label">放纵一下</view>
+        </view>
+      </view>
+      <view class="bar">
+        <view class="bar-in {{state.remaining < 0 ? 'over' : ''}}" style="width: {{state.pct}}%"></view>
+      </view>
+      <view wx:if="{{state.debt > 0}}" class="debt">
+        含分摊历史超支 -{{state.debt}} kcal（前几天超的，匀到今天一点）
+      </view>
+      <view class="steps-row">
+        <text class="steps-label">今日步数</text>
+        <input class="steps-input" type="number" value="{{state.steps}}" bindblur="onStepsBlur" placeholder="选填" />
+        <text wx:if="{{state.bonus > 0}}" class="steps-bonus">+{{state.bonus}} kcal</text>
+        <text wx:else class="steps-tip">走了路，额度会自动加</text>
+      </view>
+      <view class="quota-line">
+        <text>早 {{state.meals.breakfast.quota}}</text>
+        <text>午 {{state.meals.lunch.quota}}</text>
+        <text>晚 {{state.meals.dinner.quota}}</text>
+        <text class="dim">kcal</text>
+      </view>
+      <view class="dim">基础代谢 {{state.bmr}} · 每日消耗 {{state.tdee}} kcal（Mifflin-St Jeor）</view>
+    </view>
+
+    <!-- 下一顿建议 -->
+    <view class="card advice">
+      <view class="advice-tag">下一顿怎么吃</view>
+      <view class="advice-text">{{advice}}</view>
+    </view>
+
+    <!-- 推荐卡 -->
+    <view class="card combo">
+      <block wx:if="{{combo}}">
+        <view class="combo-head">{{comboHead}}</view>
+        <view class="combo-main">
+          <view class="combo-name">{{combo.main.name}}</view>
+          <view class="combo-sub">{{combo.main.portion}} · {{combo.main.kcal}} kcal</view>
+        </view>
+        <view wx:if="{{combo.drink}}" class="combo-drink">
+          <text>+ {{combo.drink.name}}</text>
+          <text class="combo-drink-kcal">{{combo.drink.kcal}} kcal</text>
+        </view>
+        <view class="combo-total">
+          合计约 {{combo.total.kcal}} kcal
+          <text class="dim">（蛋白 {{combo.total.p}}g / 碳水 {{combo.total.c}}g / 脂肪 {{combo.total.f}}g）</text>
+        </view>
+        <view class="combo-note">{{combo.note}}</view>
+        <view class="find-shop" bindtap="onNearbyTap" data-cuisine="{{combo.main.cuisine}}">附近找这类店 →</view>
+        <view class="btns">
+          <button class="btn-primary btn-half" bindtap="acceptCombo">就吃这个</button>
+          <button class="btn-ghost btn-half" bindtap="reroll">换一个</button>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="combo-empty">别翻了，直接给你出方案</view>
+        <button class="btn-primary" bindtap="recommend">给我推荐{{nextBtnLabel}}</button>
+      </block>
+    </view>
+
+    <!-- 附近搜店 -->
+    <view class="card nearby" wx:if="{{nearby.show}}">
+      <view class="nearby-head">
+        <view class="card-title">附近的店 · 1.5km内</view>
+        <view class="nearby-close" bindtap="closeNearby">收起</view>
+      </view>
+      <view class="nearby-chips">
+        <view class="chip {{nearby.cuisine === item.key ? 'on' : ''}}" wx:for="{{cuisineChips}}" wx:key="key" bindtap="setNearbyCuisine" data-key="{{item.key}}">{{item.label}}</view>
+      </view>
+      <view wx:if="{{nearby.loading}}" class="nearby-msg">定位并搜索中…</view>
+      <view wx:elif="{{nearby.error}}" class="nearby-msg err">{{nearby.error}}</view>
+      <view wx:else>
+        <view class="shop" wx:for="{{nearby.list}}" wx:key="idx" bindtap="openShop" data-i="{{item.idx}}">
+          <view class="shop-name">{{item.name}}<text wx:if="{{item.distanceText}}" class="shop-dist">{{item.distanceText}}</text></view>
+          <view class="shop-sub">{{item.address}}</view>
+        </view>
+      </view>
+      <view class="dim nearby-tip">点店家可打开微信地图导航；仅按品类搜店，不含菜单</view>
+    </view>
+
+    <!-- 今天已吃 -->
+    <view class="card eaten" wx:if="{{todayItems.length}}">
+      <view class="card-title">今天已吃 {{state.consumed.kcal}} kcal</view>
+      <view class="eaten-item" wx:for="{{todayItems}}" wx:key="ts">
+        <text class="eaten-meal">{{item.mealLabel}}</text>
+        <text class="eaten-name">{{item.name}}</text>
+        <text class="eaten-kcal">{{item.kcal}} kcal</text>
+      </view>
+    </view>
+
+    <view class="footer dim">品类级估算 ±20%，管预算，不管精确。去「记录」看账本，去「我的」改资料。</view>
+  </block>
+</view>

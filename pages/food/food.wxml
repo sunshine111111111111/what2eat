@@ -1,0 +1,54 @@
+<view class="page">
+  <view class="card">
+    <view class="card-title">添加自定义食物</view>
+    <view class="dim">加进来之后，推荐引擎就会把它放进抽取池一起抽</view>
+
+    <view class="row">
+      <view class="label">名称</view>
+      <input class="input" value="{{form.name}}" bindinput="onNameInput" placeholder="如 食堂鸡腿套餐" />
+    </view>
+    <view class="row">
+      <view class="label">类别</view>
+      <picker class="picker" range="{{catLabels}}" value="{{catIndex}}" bindchange="onCatChange">
+        <view class="picker-text">{{catLabels[catIndex]}}</view>
+      </picker>
+    </view>
+    <view class="row" wx:if="{{catIndex === 0}}">
+      <view class="label">类型</view>
+      <picker class="picker" range="{{cuisineLabels}}" value="{{cuisineIndex}}" bindchange="onCuisineChange">
+        <view class="picker-text">{{cuisineLabels[cuisineIndex]}}</view>
+      </picker>
+    </view>
+    <view class="row">
+      <view class="label">热量 kcal</view>
+      <input class="input" type="digit" value="{{form.kcal}}" bindinput="onKcalInput" placeholder="如 650" />
+    </view>
+    <view class="row3">
+      <input class="input" type="digit" value="{{form.p}}" bindinput="onPInput" placeholder="蛋白 g" />
+      <input class="input" type="digit" value="{{form.c}}" bindinput="onCInput" placeholder="碳水 g" />
+      <input class="input" type="digit" value="{{form.f}}" bindinput="onFInput" placeholder="脂肪 g" />
+    </view>
+    <view class="row">
+      <view class="label">份量说明</view>
+      <input class="input" value="{{form.portion}}" bindinput="onPortionInput" placeholder="如 1份/大碗，选填" />
+    </view>
+    <view class="row">
+      <view class="label">价格 ¥</view>
+      <input class="input" type="digit" value="{{form.price}}" bindinput="onPriceInput" placeholder="选填" />
+    </view>
+    <button class="btn-primary" bindtap="addFood">加入食物池</button>
+  </view>
+
+  <view class="card">
+    <view class="card-title">我的自定义食物（{{list.length}}）</view>
+    <view wx:if="{{!list.length}}" class="dim center">还没有自定义食物，上面加一个试试</view>
+    <view class="item" wx:for="{{list}}" wx:key="id">
+      <view class="item-body">
+        <view class="item-name">{{item.name}}</view>
+        <view class="dim">{{item.catLabel}} · {{item.portion}} · {{item.kcal}} kcal · 蛋白{{item.p}}g 碳水{{item.c}}g 脂肪{{item.f}}g</view>
+      </view>
+      <view class="item-del" bindtap="removeFood" data-id="{{item.id}}">删</view>
+    </view>
+    <view class="dim center note">另有内置食物库 {{baseCount}} 条，共 {{baseCount + list.length}} 条在池</view>
+  </view>
+</view>

@@ -1,0 +1,14 @@
+{
+  "compileType": "miniprogram",
+  "appid": "",
+  "projectname": "what2eat",
+  "libVersion": "2.33.0",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "urlCheck": false
+  },
+  "condition": {}
+}

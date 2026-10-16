@@ -1,0 +1,24 @@
+/* record.wxss */
+.page { padding-bottom: 40rpx; }
+.center { text-align: center; padding: 20rpx 0; }
+
+.item { display: flex; align-items: center; padding: 16rpx 0; border-bottom: 1rpx solid #f2f3f5; }
+.item:last-child { border-bottom: none; }
+.item-meal { width: 90rpx; color: #ff7d00; font-size: 22rpx; flex-shrink: 0; }
+.item-body { flex: 1; min-width: 0; }
+.item-name { font-size: 28rpx; }
+.item-right { text-align: right; margin-left: 16rpx; }
+.item-kcal { font-size: 26rpx; color: #33373d; }
+.item-del { font-size: 22rpx; color: #c0c4cc; margin-top: 8rpx; padding: 4rpx 10rpx; }
+
+.day-row { display: flex; align-items: center; padding: 14rpx 0; font-size: 26rpx; }
+.day-date { flex: 1; color: #5a6068; }
+.day-date.today { color: #22252a; font-weight: 600; }
+.indulge-pill { background: #fff3e8; color: #ff7d00; font-size: 20rpx; padding: 2rpx 10rpx; border-radius: 6rpx; margin-left: 10rpx; }
+.day-num { width: 220rpx; text-align: right; }
+.day-status { width: 130rpx; text-align: right; }
+.ok { color: #2eae60; }
+
+.footer { margin: 28rpx 24rpx 0; text-align: center; }
+
+.day-steps { font-size: 20rpx; color: #8a8f99; margin-left: 10rpx; }

@@ -1,0 +1,33 @@
+{
+  "pages": [
+    "pages/today/today",
+    "pages/record/record",
+    "pages/me/me",
+    "pages/food/food"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于搜索附近1.5公里内的餐厅；位置仅发送给高德地图接口完成本次搜索，本机不做存储"
+    }
+  },
+  "requiredPrivateInfos": ["getLocation"],
+  "window": {
+    "navigationBarTitleText": "今天吃什么",
+    "navigationBarBackgroundColor": "#ff7d00",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f6f7f9"
+  },
+  "tabBar": {
+    "color": "#8a8f99",
+    "selectedColor": "#ff7d00",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/today/today", "text": "今日" },
+      { "pagePath": "pages/record/record", "text": "记录" },
+      { "pagePath": "pages/me/me", "text": "我的" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

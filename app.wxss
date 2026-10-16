@@ -1,0 +1,60 @@
+/* what2eat 全局样式 */
+page {
+  background: #f6f7f9;
+  color: #22252a;
+  font-size: 28rpx;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+.card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  margin: 24rpx 24rpx 0;
+  box-shadow: 0 4rpx 20rpx rgba(20, 25, 40, 0.05);
+}
+
+.h1 { font-size: 40rpx; font-weight: 600; }
+.sub { font-size: 24rpx; color: #8a8f99; margin-top: 8rpx; }
+.card-title { font-size: 30rpx; font-weight: 600; margin-bottom: 16rpx; }
+
+.row { display: flex; align-items: center; padding: 16rpx 0; }
+.label { width: 170rpx; color: #5a6068; font-size: 26rpx; flex-shrink: 0; }
+.input {
+  background: #f2f3f5;
+  border-radius: 12rpx;
+  padding: 14rpx 18rpx;
+  font-size: 28rpx;
+  flex: 1;
+}
+
+.seg { display: flex; flex: 1; border-radius: 12rpx; overflow: hidden; border: 1rpx solid #e3e5ea; }
+.seg-item { flex: 1; text-align: center; padding: 14rpx 0; font-size: 26rpx; background: #fff; }
+.seg-item.on { background: #ff7d00; color: #fff; }
+
+.btn-primary {
+  background: #ff7d00;
+  color: #fff;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  margin-top: 30rpx;
+}
+.btn-ghost {
+  background: #fff;
+  color: #ff7d00;
+  border: 1rpx solid #ffb27d;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  margin-top: 20rpx;
+}
+button::after { border: none; }
+
+.chk { display: inline-flex; align-items: center; margin: 10rpx 18rpx 10rpx 0; font-size: 26rpx; }
+.chk checkbox { transform: scale(0.8); margin-right: 6rpx; }
+
+.bar { height: 16rpx; background: #eef0f3; border-radius: 8rpx; overflow: hidden; margin-top: 18rpx; }
+.bar-in { height: 100%; background: linear-gradient(90deg, #ffb27d, #ff7d00); border-radius: 8rpx; }
+.bar-in.over { background: linear-gradient(90deg, #ff8a80, #e53935); }
+
+.neg { color: #e53935; }
+.dim { color: #8a8f99; font-size: 24rpx; }
